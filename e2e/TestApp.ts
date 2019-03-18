@@ -5,10 +5,10 @@ export class TestApp {
     static allowingUsersAuthenticatedWith(credentials: { username: string, password: string }) {
         const app = express();
 
-        // app.use(basicAuth({
-        //     users: { [credentials.username]: credentials.password },
-        //     challenge: true, // <--- needed to actually show the dialog box
-        // }));
+        app.use(basicAuth({
+            users: { [credentials.username]: credentials.password },
+            challenge: true, // <--- needed to actually show the dialog box
+        }));
 
         app.get('/', (req: express.Request, res: express.Response) => {
             res.send(`
