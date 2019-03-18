@@ -1,0 +1,73 @@
+{
+  "name": "authenticator-web-extension",
+  "version": "0.0.0-development",
+  "description": "Enables your browser-based automated tests to authenticate with your web app.",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf target reports",
+    "lint": "tslint --project tsconfig.json --config tslint.json --format stylish",
+    "compile": "tsc --project tsconfig.json",
+    "test:spec": "nyc --report-dir ./reports/coverage mocha --require ts-node/register --reporter spec 'spec/**/*.spec.ts'",
+    "test:e2e": "protractor e2e/protractor.conf.js",
+    "test": "npm run test:spec",
+    "verify": "npm run clean && npm run lint && npm run test:spec && npm run compile && npm run test:e2e",
+    "publish:reports": "nyc report --reporter=text-lcov | coveralls",
+    "commit": "git-cz",
+    "semantic-release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jan-molak/authenticator-web-extension.git"
+  },
+  "keywords": [
+    "chrome",
+    "protractor",
+    "webdriver",
+    "wdio",
+    "plugin",
+    "extension"
+  ],
+  "author": "Jan Molak <jan.molak@smartcodeltd.co.uk>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/jan-molak/authenticator-web-extension/issues"
+  },
+  "homepage": "https://github.com/jan-molak/authenticator-web-extension#readme",
+  "devDependencies": {
+    "@serenity-js/assertions": "next",
+    "@serenity-js/core": "next",
+    "@serenity-js/local-server": "next",
+    "@serenity-js/protractor": "next",
+    "@types/chai": "^4.1.7",
+    "@types/express": "^4.16.1",
+    "@types/mocha": "^5.2.6",
+    "@types/mustache": "^0.8.32",
+    "@types/read-pkg": "^3.0.0",
+    "chai": "^4.2.0",
+    "chromedriver": "^2.46.0",
+    "commitizen": "^3.0.7",
+    "coveralls": "^3.0.3",
+    "cz-conventional-changelog": "^2.1.0",
+    "express": "^4.16.4",
+    "express-basic-auth": "^1.1.6",
+    "mocha": "^6.0.2",
+    "mocha-testdata": "^1.2.0",
+    "nyc": "^13.3.0",
+    "protractor": "^5.4.2",
+    "rimraf": "^2.6.3",
+    "semantic-release": "^15.13.3",
+    "semantic-release-cli": "^4.1.1",
+    "travis-deploy-once": "^5.0.11",
+    "ts-node": "^8.0.3",
+    "tslint": "^5.14.0",
+    "tslint-microsoft-contrib": "^6.1.0",
+    "typescript": "3.0.1"
+  },
+  "dependencies": {
+    "mustache": "^3.0.1",
+    "node-zip": "^1.1.1",
+    "read-pkg": "^5.0.0",
+    "tiny-types": "^1.12.0",
+    "upath": "^1.1.2"
+  }
+}

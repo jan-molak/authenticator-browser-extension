@@ -1,0 +1,16 @@
+# Node
+node_modules
+*.log
+.npmignore
+package-lock.json
+
+# Supporting files
+.nyc_output
+spec
+e2e
+reports
+
+# Config
+.travis.yml
+tsconfig*.json
+tslint.json

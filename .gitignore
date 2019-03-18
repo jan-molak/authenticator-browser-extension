@@ -1,0 +1,13 @@
+# IntelliJ
+.idea
+*.iml
+
+# Node
+node_modules
+
+# Build process
+.nyc_output
+reports
+lib
+*.log
+
