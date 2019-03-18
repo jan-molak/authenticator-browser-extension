@@ -16,3 +16,5 @@ after_success:
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
+addons:
+  chrome: stable
