@@ -1,8 +1,9 @@
 {
-  "name": "authenticator-web-extension",
+  "name": "authenticator-browser-extension",
   "version": "0.0.0-development",
   "description": "Enables your browser-based automated tests to authenticate with your web app.",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "clean": "rimraf target reports",
     "lint": "tslint --project tsconfig.json --config tslint.json --format stylish",
@@ -18,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jan-molak/authenticator-web-extension.git"
+    "url": "https://github.com/jan-molak/authenticator-browser-extension.git"
   },
   "keywords": [
     "chrome",
@@ -31,9 +32,9 @@
   "author": "Jan Molak <jan.molak@smartcodeltd.co.uk>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/jan-molak/authenticator-web-extension/issues"
+    "url": "https://github.com/jan-molak/authenticator-browser-extension/issues"
   },
-  "homepage": "https://github.com/jan-molak/authenticator-web-extension#readme",
+  "homepage": "https://github.com/jan-molak/authenticator-browser-extension#readme",
   "devDependencies": {
     "@serenity-js/assertions": "next",
     "@serenity-js/core": "next",
