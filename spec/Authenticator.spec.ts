@@ -20,7 +20,7 @@ describe('Authenticator', () => {
 
             expect(manifest.description).to.deep.equal(pkg.description);
             expect(manifest.name).to.deep.equal(pkg.name);
-            expect(manifest.version).to.deep.equal(pkg.version);
+            expect(manifest.version).to.match(/([0-9]\.?){3}/);
 
             // authenticator
             const authenticator = zip.files['authenticator.js']._data;

@@ -28,7 +28,7 @@ exports.config = {
                 '--window-size=1024x768',
             ],
             extensions: [
-                // Authenticator.for('admin', 'Password123').asBase64()
+                Authenticator.for('admin', 'Password123').asBase64()
             ]
         }
     },

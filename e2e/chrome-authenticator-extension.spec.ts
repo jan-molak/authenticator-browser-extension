@@ -1,15 +1,10 @@
 import 'mocha';
 import { Ensure, equals } from '@serenity-js/assertions';
-import { Actor, serenity } from '@serenity-js/core';
+import { Actor } from '@serenity-js/core';
 import { LocalServer, ManageALocalServer, StartLocalServer } from '@serenity-js/local-server';
 import { BrowseTheWeb, Navigate, Target, Text } from '@serenity-js/protractor';
 import { by, protractor } from 'protractor';
 import { TestApp } from './TestApp';
-import { ConsoleReporter } from '@serenity-js/core/lib/stage';
-
-serenity.stageManager.register(
-    new ConsoleReporter(),
-);
 
 describe('Chrome Authenticator Extension', function () {
 
