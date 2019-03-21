@@ -1,14 +1,21 @@
 import fs = require('fs');
 import Mustache = require('mustache');
-const Zip = require('node-zip');                   // tslint:disable-line:no-var-requires  no type definitions available
 import readPkg = require('read-pkg');
-import { coerce, SemVer } from 'semver';
-import { ensure, isGreaterThan, isString, property } from 'tiny-types';
 import path = require('upath');
 
+const Zip = require('node-zip');                   // tslint:disable-line:no-var-requires  no type definitions available
+import { coerce, SemVer } from 'semver';
+import { ensure, isArray, isGreaterThan, isString, property } from 'tiny-types';
+
 export class Authenticator {
-    static for(username: string, password: string): Authenticator {
-        return new Authenticator(username, password);
+    /**
+     * @param {string} username
+     * @param {string} password
+     * @param {string[]} permissions
+     *  See https://developer.chrome.com/extensions/declare_permissions
+     */
+    static for(username: string, password: string, permissions: string[] = ['<all_urls>']): Authenticator {
+        return new Authenticator(username, password, permissions);
     }
 
     asBase64(): string {
@@ -18,9 +25,11 @@ export class Authenticator {
     private constructor(
         private readonly username: string,
         private readonly password: string,
+        private readonly permissions: string[],
     ) {
         ensure('username', username, isString(), property('length', isGreaterThan(0)));
         ensure('password', password, isString(), property('length', isGreaterThan(0)));
+        ensure('permissions', permissions, isArray(), property('length', isGreaterThan(0)));
     }
 
     private extension(): NodeZip {
@@ -32,6 +41,7 @@ export class Authenticator {
             contentsOf('../extension/manifest.mustache.json'), {
                 name,
                 description,
+                permissions: this.permissions.map(permission => `"${ permission }"`).join(', '),
                 version: (coerce(version) as SemVer).version,
             },
         ));

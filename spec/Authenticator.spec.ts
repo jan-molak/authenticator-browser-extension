@@ -31,6 +31,34 @@ describe('Authenticator', () => {
         });
     });
 
+    describe('permissions', () => {
+
+        it('applies to all URLs by default', () => {
+            const data = Authenticator.for('user', 'pass').asBase64();
+
+            const zip = new Zip(data, {base64: true, checkCRC32: true});
+
+            const manifest = JSON.parse(zip.files['manifest.json']._data);
+
+            expect(manifest.permissions).to.contain('<all_urls>');
+        });
+
+        it('allows the developer to restrict the extension to specific URLs', () => {
+            const data = Authenticator.for('user', 'pass', [ 'http://localhost/' ]).asBase64();
+
+            const zip = new Zip(data, {base64: true, checkCRC32: true});
+
+            const manifest = JSON.parse(zip.files['manifest.json']._data);
+
+            expect(manifest.permissions).to.contain('http://localhost/');
+            expect(manifest.permissions).to.not.contain('<all_urls>');
+        });
+
+        it('complains when given no permissions', () => {
+            expect(() => Authenticator.for('user', 'pass', [ ])).to.throw('permissions should have length that is greater than 0');
+        });
+    });
+
     describe('when handling errors', () => {
 
         given([
