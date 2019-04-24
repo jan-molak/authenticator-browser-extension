@@ -1,6 +1,7 @@
 import 'mocha';
 import { expect } from 'chai';
 import { given } from 'mocha-testdata';
+import path = require('path');
 import readPkg = require('read-pkg');
 const Zip = require('node-zip');                   // tslint:disable-line:no-var-requires  no type definitions available
 import { Authenticator } from '../src';
@@ -15,7 +16,7 @@ describe('Authenticator', () => {
             const zip = new Zip(data, {base64: true, checkCRC32: true});
 
             // manifest
-            const pkg = readPkg.sync('../package.json');
+            const pkg = readPkg.sync({ cwd: path.resolve(__dirname, '..') });
             const manifest = JSON.parse(zip.files['manifest.json']._data);
 
             expect(manifest.description).to.deep.equal(pkg.description);

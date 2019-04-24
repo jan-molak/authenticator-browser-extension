@@ -35,14 +35,14 @@ export class Authenticator {
     private extension(): NodeZip {
         const zip: NodeZip = new Zip();
 
-        const { name, description, version } = readPkg.sync(path.resolve(__dirname, '../package.json'));
+        const { name, description, version } = readPkg.sync({ cwd: path.resolve(__dirname, '..') });
 
         zip.file('manifest.json', Mustache.render(
             contentsOf('../extension/manifest.mustache.json'), {
                 name,
                 description,
                 permissions: this.permissions.map(permission => `"${ permission }"`).join(', '),
-                version: (coerce(version) as SemVer).version,
+                version: (coerce(version as string) as SemVer).version,
             },
         ));
 
