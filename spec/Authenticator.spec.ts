@@ -56,29 +56,30 @@ describe('Authenticator', () => {
         });
 
         it('complains when given no permissions', () => {
-            expect(() => Authenticator.for('user', 'pass', [ ])).to.throw('permissions should have length that is greater than 0');
+            expect(() => Authenticator.for('user', 'pass', [ ]))
+                .to.throw('permissions should have a property "length" that is greater than 0');
         });
     });
 
     describe('when handling errors', () => {
 
         given([
-            { value: null,      expected: 'username should be a string',                        },
-            { value: undefined, expected: 'username should be a string',                        },
-            { value: '',        expected: 'username should have length that is greater than 0', },
-            { value: {},        expected: 'username should be a string',                        },
-            { value: [],        expected: 'username should be a string',                        },
+            { value: null,      expected: 'username should be a string',                                        },
+            { value: undefined, expected: 'username should be a string',                                        },
+            { value: '',        expected: 'username should have a property "length" that is greater than 0',    },
+            { value: {},        expected: 'username should be a string',                                        },
+            { value: [],        expected: 'username should be a string',                                        },
         ]).
         it('complains if provided with an invalid username', ({ value, expected }: { value: any, expected: string }) => {
             expect(() => Authenticator.for(value, 'password')).to.throw(expected);
         });
 
         given([
-            { value: null,      expected: 'password should be a string',                        },
-            { value: undefined, expected: 'password should be a string',                        },
-            { value: '',        expected: 'password should have length that is greater than 0', },
-            { value: {},        expected: 'password should be a string',                        },
-            { value: [],        expected: 'password should be a string',                        },
+            { value: null,      expected: 'password should be a string',                                    },
+            { value: undefined, expected: 'password should be a string',                                    },
+            { value: '',        expected: 'password should have a property "length" that is greater than 0' },
+            { value: {},        expected: 'password should be a string',                                    },
+            { value: [],        expected: 'password should be a string',                                    },
         ]).
         it('complains if provided with an invalid password', ({ value, expected }: { value: any, expected: string }) => {
             expect(() => Authenticator.for('username', value)).to.throw(expected)
