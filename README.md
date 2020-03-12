@@ -5,6 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/jan-molak/authenticator-browser-extension/badge.svg)](https://coveralls.io/github/jan-molak/authenticator-browser-extension)
 [![npm](https://img.shields.io/npm/dm/authenticator-browser-extension.svg)](https://npm-stat.com/charts.html?package=authenticator-browser-extension)
 [![Known Vulnerabilities](https://snyk.io/test/github/jan-molak/authenticator-browser-extension/badge.svg)](https://snyk.io/test/github/jan-molak/authenticator-browser-extension)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjan-molak%2Fauthenticator-browser-extension.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjan-molak%2Fauthenticator-browser-extension?ref=badge_shield)
 
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
@@ -81,3 +82,6 @@ Have feedback? Let me know on twitter: [@JanMolak](https://twitter.com/JanMolak)
 Authenticator library is licensed under the Apache-2.0 license.
 
 _- Copyright &copy; 2019- [Jan Molak](https://janmolak.com)_
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjan-molak%2Fauthenticator-browser-extension.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjan-molak%2Fauthenticator-browser-extension?ref=badge_large)
