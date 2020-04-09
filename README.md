@@ -9,7 +9,6 @@
 
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-
 Authenticator is a [web browser extension](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions)
 that enables your WebdriverIO and Protractor-based automated tests to authenticate with web apps
 using [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication).
@@ -18,6 +17,7 @@ Authenticator generates the browser extension dynamically, so you can easily pro
 via a config file or env variables.
 
 Authenticator currently supports:
+
 - [Google Chrome](https://www.google.co.uk/chrome/)
 
 ## Usage
@@ -31,22 +31,21 @@ Import the `authenticator-browser-extension` in the [`wdio.conf.js`](https://web
 ```javascript
 // wdio.conf.js
 
-const { Authenticator } = require('authenticator-browser-extension');
+const { Authenticator } = require("authenticator-browser-extension");
 
 exports.config = {
-    
-    capabilities: [{
-        browserName: 'chrome',
+  capabilities: [
+    {
+      browserName: "chrome",
 
-        'goog:chromeOptions': {
-            extensions: [
-                Authenticator.for('username', 'password').asBase64()
-            ]
-        }
-    }],
-    
-    // other WebdriverIO config
-}
+      "goog:chromeOptions": {
+        extensions: [Authenticator.for("username", "password").asBase64()],
+      },
+    },
+  ],
+
+  // other WebdriverIO config
+};
 ```
 
 ### Protractor
@@ -56,21 +55,42 @@ Import the `authenticator-browser-extension` in the [`protractor.conf.js`](https
 ```javascript
 // protractor.conf.js
 
-const { Authenticator } = require('authenticator-browser-extension');
+const { Authenticator } = require("authenticator-browser-extension");
 
 exports.config = {
+  capabilities: {
+    browserName: "chrome",
 
-    capabilities: {
-        browserName: 'chrome',
-
-        chromeOptions: {
-            extensions: [
-                Authenticator.for('username', 'password').asBase64()
-            ]
-        }
+    chromeOptions: {
+      extensions: [Authenticator.for("username", "password").asBase64()],
     },
+  },
 
-    // other Protractor config
+  // other Protractor config
+};
+```
+
+### Puppeteer
+
+Import the `authenticator-browser-extension` and load `Authenticator` extension while launching the puppeteer browser:
+
+```javascript
+const { Authenticator } = require('authenticator-browser-extension');
+
+await puppeteer.launch({
+      headless: false,
+
+      args: [
+        `--disable-extensions-except=${Authenticator.for(
+          "username",
+          "password"
+        ).asFileAt("pathToFolder")}`, //Authenticator will generate necessary files in pathToFolder
+
+        `--load-extension=${Authenticator.for("username", "password").asFileAt(
+          "pathToFolder"
+        )}`,
+      ],
+    });
 }
 ```
 
@@ -93,13 +113,13 @@ Have feedback? Let me know on twitter: [@JanMolak](https://twitter.com/JanMolak)
 
 ## Before you go
 
-☕ If Authenticator has made your life a little bit easier and saved at least $5 worth of your time,
+☕ If Authenticator has made your life a little bit easier and saved at least \$5 worth of your time,
 please consider repaying the favour and [buying me a coffee](https://github.com/sponsors/jan-molak) via [Github Sponsors](https://github.com/sponsors/jan-molak). Thanks! 🙏
 
 ## License
+
 Authenticator library is licensed under the Apache-2.0 license.
 
 _- Copyright &copy; 2019- [Jan Molak](https://janmolak.com)_
-
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjan-molak%2Fauthenticator-browser-extension.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjan-molak%2Fauthenticator-browser-extension?ref=badge_large)

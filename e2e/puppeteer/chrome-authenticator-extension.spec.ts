@@ -1,5 +1,5 @@
 import "ts-mocha";
-import { Page, ElementHandle } from "puppeteer";
+import { Page, ElementHandle, Browser } from "puppeteer";
 const puppeteer = require("puppeteer");
 import { Ensure, equals } from "@serenity-js/assertions";
 import {
@@ -16,28 +16,34 @@ import {
   LocalServer,
   ManageALocalServer,
   StartLocalServer,
+  StopLocalServer,
 } from "@serenity-js/local-server";
 
 import { TestApp } from "../TestApp";
 import { Authenticator } from "../../src";
 
 let page: Page = null;
+let browser: Browser = null;
 
 describe("Chrome Authenticator Extension, when used with puppeteer", function () {
   this.timeout(5000);
 
   before(async () => {
-    const puppeteerLaunch = await puppeteer.launch({
+    browser = await puppeteer.launch({
       headless: false,
 
       args: [
-        `--load-extension=${Authenticator.for(
+        `--disable-extensions-except=${Authenticator.for(
           "admin",
           "Password123"
-        ).asBase64()}`,
+        ).asFileAt(`${process.cwd()}/build`)}`,
+
+        `--load-extension=${Authenticator.for("admin", "Password123").asFileAt(
+          `${process.cwd()}/build`
+        )}`,
       ],
     });
-    page = await puppeteerLaunch.newPage();
+    page = await browser.newPage();
   });
 
   class Actors implements Cast {
@@ -64,6 +70,9 @@ describe("Chrome Authenticator Extension, when used with puppeteer", function ()
       Navigate.to(LocalServer.url()),
       Ensure.that(Text.of(TestPage.Title), equals("Authenticated!"))
     ));
+
+  after(async () => await browser.close());
+  after(() => actorCalled("Dave").attemptsTo(StopLocalServer.ifRunning()));
 });
 
 // Serenity/JS doesn't support Puppeteer natively yet.
@@ -96,11 +105,7 @@ const Text = {
   of: (target: Question<Promise<ElementHandle>>) =>
     Question.about<Promise<any>>(`text of ${target}`, (actor) =>
       actor.answer(target).then((element) => {
-        let text: string;
-        element.evaluate((el) => {
-          text = el.textContent;
-        });
-        return text;
+        return page.evaluate((el) => el.innerText, element).then((txt) => txt);
       })
     ),
 };
