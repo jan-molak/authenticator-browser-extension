@@ -2,9 +2,11 @@ import 'mocha';
 import { expect } from 'chai';
 import { given } from 'mocha-testdata';
 import path = require('path');
-import readPkg = require('read-pkg');
-const Zip = require('node-zip');                   // tslint:disable-line:no-var-requires  no type definitions available
+import readPkg = require('read-pkg');                               // eslint-disable-line unicorn/prevent-abbreviations
 import { Authenticator } from '../src';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires -- no type definitions available
+const Zip = require('node-zip');
 
 describe('Authenticator', () => {
 
@@ -15,13 +17,13 @@ describe('Authenticator', () => {
 
             const zip = new Zip(data, {base64: true, checkCRC32: true});
 
-            // manifest
-            const pkg = readPkg.sync({ cwd: path.resolve(__dirname, '..') });
+            const pkg = readPkg.sync({ cwd: path.resolve(__dirname, '..') });   // eslint-disable-line unicorn/prevent-abbreviations
+
             const manifest = JSON.parse(zip.files['manifest.json']._data);
 
             expect(manifest.description).to.deep.equal(pkg.description);
             expect(manifest.name).to.deep.equal(pkg.name);
-            expect(manifest.version).to.match(/([0-9]\.?){3}/);
+            expect(manifest.version).to.match(/(\d\.?){3}/);
 
             // authenticator
             const authenticator = zip.files['authenticator.js']._data;
@@ -63,6 +65,7 @@ describe('Authenticator', () => {
 
     describe('when handling errors', () => {
 
+        /* eslint-disable @typescript-eslint/indent */
         given([
             { value: null,      expected: 'username should be a string',                                        },
             { value: undefined, expected: 'username should be a string',                                        },
@@ -70,8 +73,8 @@ describe('Authenticator', () => {
             { value: {},        expected: 'username should be a string',                                        },
             { value: [],        expected: 'username should be a string',                                        },
         ]).
-        it('complains if provided with an invalid username', ({ value, expected }: { value: any, expected: string }) => {
-            expect(() => Authenticator.for(value, 'password')).to.throw(expected);
+        it('complains if provided with an invalid username', ({ value, expected }: { value: unknown; expected: string }) => {
+            expect(() => Authenticator.for(value as string, 'password')).to.throw(expected);
         });
 
         given([
@@ -81,8 +84,9 @@ describe('Authenticator', () => {
             { value: {},        expected: 'password should be a string',                                    },
             { value: [],        expected: 'password should be a string',                                    },
         ]).
-        it('complains if provided with an invalid password', ({ value, expected }: { value: any, expected: string }) => {
-            expect(() => Authenticator.for('username', value)).to.throw(expected)
+        it('complains if provided with an invalid password', ({ value, expected }: { value: unknown; expected: string }) => {
+            expect(() => Authenticator.for('username', value as string)).to.throw(expected)
         });
+        /* eslint-enable @typescript-eslint/indent */
     });
 });

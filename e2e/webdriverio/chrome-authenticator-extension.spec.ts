@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-use-before-define */
+
 import 'mocha';
 import 'webdriverio';
 import { BrowserObject, Element } from 'webdriverio';
@@ -61,7 +63,7 @@ const Target = {
 const Text = {
     of: (target: Question<Promise<Element>>) =>
         Question.about<Promise<string>>(`text of ${ target }`, actor =>
-            actor.answer(target).then(el => el.getText()),
+            actor.answer(target).then(element => element.getText()),
         ),
 };
 

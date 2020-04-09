@@ -1,8 +1,8 @@
 import express = require('express');
-const basicAuth = require('express-basic-auth');
+import basicAuth = require('express-basic-auth');
 
 export class TestApp {
-    static allowingUsersAuthenticatedWith(credentials: { username: string, password: string }) {
+    static allowingUsersAuthenticatedWith(credentials: { username: string; password: string }): express.Express {
         const app = express();
 
         app.use(basicAuth({
@@ -10,8 +10,8 @@ export class TestApp {
             challenge: true, // <--- needed to actually show the dialog box
         }));
 
-        app.get('/', (req: express.Request, res: express.Response) => {
-            res.send(`
+        app.get('/', (request: express.Request, response: express.Response) => {
+            response.send(`
                 <!DOCTYPE html>
                 <html>
                     <body>

@@ -1,11 +1,14 @@
+/* eslint-disable @typescript-eslint/no-use-before-define, unicorn/prevent-abbreviations */
+
 import fs = require('fs');
 import Mustache = require('mustache');
 import readPkg = require('read-pkg');
 import path = require('upath');
-
-const Zip = require('node-zip');                   // tslint:disable-line:no-var-requires  no type definitions available
 import { coerce, SemVer } from 'semver';
 import { ensure, isArray, isGreaterThan, isString, property } from 'tiny-types';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires -- no type definitions available
+const Zip = require('node-zip');
 
 export class Authenticator {
     /**
@@ -61,5 +64,5 @@ function contentsOf(fileName: string): string {
 
 interface NodeZip {
     file(name: string, contents: string | Buffer): void;
-    generate(options: { base64: boolean, compression: 'DEFLATE' }): string;
+    generate(options: { base64: boolean; compression: 'DEFLATE' }): string;
 }
