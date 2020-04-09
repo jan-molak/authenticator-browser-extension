@@ -1,7 +1,7 @@
-import "ts-mocha";
-import { Page, ElementHandle, Browser } from "puppeteer";
-const puppeteer = require("puppeteer");
-import { Ensure, equals } from "@serenity-js/assertions";
+import 'ts-mocha';
+import { Page, ElementHandle, Browser } from 'puppeteer';
+const puppeteer = require('puppeteer');
+import { Ensure, equals } from '@serenity-js/assertions';
 import {
   Ability,
   Actor,
@@ -11,21 +11,21 @@ import {
   Interaction,
   Question,
   UsesAbilities,
-} from "@serenity-js/core";
+} from '@serenity-js/core';
 import {
   LocalServer,
   ManageALocalServer,
   StartLocalServer,
   StopLocalServer,
-} from "@serenity-js/local-server";
+} from '@serenity-js/local-server';
 
-import { TestApp } from "../TestApp";
-import { Authenticator } from "../../src";
+import { TestApp } from '../TestApp';
+import { Authenticator } from '../../src';
 
 let page: Page = null;
 let browser: Browser = null;
 
-describe("Chrome Authenticator Extension, when used with puppeteer", function () {
+describe('Chrome Authenticator Extension, when used with puppeteer', function () {
   this.timeout(5000);
 
   before(async () => {
@@ -34,11 +34,11 @@ describe("Chrome Authenticator Extension, when used with puppeteer", function ()
 
       args: [
         `--disable-extensions-except=${Authenticator.for(
-          "admin",
-          "Password123"
+          'admin',
+          'Password123'
         ).asFileAt(`${process.cwd()}/build`)}`,
 
-        `--load-extension=${Authenticator.for("admin", "Password123").asFileAt(
+        `--load-extension=${Authenticator.for('admin', 'Password123').asFileAt(
           `${process.cwd()}/build`
         )}`,
       ],
@@ -52,8 +52,8 @@ describe("Chrome Authenticator Extension, when used with puppeteer", function ()
         BrowseTheWeb.using(page),
         ManageALocalServer.runningAHttpListener(
           TestApp.allowingUsersAuthenticatedWith({
-            username: "admin",
-            password: "Password123",
+            username: 'admin',
+            password: 'Password123',
           })
         )
       );
@@ -62,17 +62,17 @@ describe("Chrome Authenticator Extension, when used with puppeteer", function ()
 
   beforeEach(() => engage(new Actors()));
   beforeEach(() =>
-    actorCalled("Dave").attemptsTo(StartLocalServer.onRandomPort())
+    actorCalled('Dave').attemptsTo(StartLocalServer.onRandomPort())
   );
 
   it(`enables a Chrome web browser-based test to authenticate with a web app`, () =>
-    actorCalled("Dave").attemptsTo(
+    actorCalled('Dave').attemptsTo(
       Navigate.to(LocalServer.url()),
-      Ensure.that(Text.of(TestPage.Title), equals("Authenticated!"))
+      Ensure.that(Text.of(TestPage.Title), equals('Authenticated!'))
     ));
 
   after(async () => await browser.close());
-  after(() => actorCalled("Dave").attemptsTo(StopLocalServer.ifRunning()));
+  after(() => actorCalled('Dave').attemptsTo(StopLocalServer.ifRunning()));
 });
 
 // Serenity/JS doesn't support Puppeteer natively yet.
@@ -111,7 +111,7 @@ const Text = {
 };
 
 const TestPage = {
-  Title: Target.the("header").locatedBy("h1"),
+  Title: Target.the('header').locatedBy('h1'),
 };
 
 class BrowseTheWeb implements Ability {

@@ -1,11 +1,11 @@
-import fs = require("fs");
-import Mustache = require("mustache");
-import readPkg = require("read-pkg");
-import path = require("upath");
+import fs = require('fs');
+import Mustache = require('mustache');
+import readPkg = require('read-pkg');
+import path = require('upath');
 
-const Zip = require("node-zip"); // tslint:disable-line:no-var-requires  no type definitions available
-import { coerce, SemVer } from "semver";
-import { ensure, isArray, isGreaterThan, isString, property } from "tiny-types";
+const Zip = require('node-zip'); // tslint:disable-line:no-var-requires  no type definitions available
+import { coerce, SemVer } from 'semver';
+import { ensure, isArray, isGreaterThan, isString, property } from 'tiny-types';
 
 export class Authenticator {
   /**
@@ -17,20 +17,20 @@ export class Authenticator {
   static for(
     username: string,
     password: string,
-    permissions: string[] = ["<all_urls>"]
+    permissions: string[] = ['<all_urls>']
   ): Authenticator {
     return new Authenticator(username, password, permissions);
   }
 
   asBase64(): string {
-    return this.extension().generate({ base64: true, compression: "DEFLATE" });
+    return this.extension().generate({ base64: true, compression: 'DEFLATE' });
   }
 
   asFileAt(_path: string): string {
     const zip = new Zip(
       this.extension().generate({
         base64: false,
-        compression: "DEFLATE",
+        compression: 'DEFLATE',
       }),
       {
         base64: false,
@@ -42,11 +42,11 @@ export class Authenticator {
       fs.mkdirSync(_path);
     }
     fs.writeFileSync(
-      path.join(_path, "manifest.json"),
-      zip.files["manifest.json"]._data
+      path.join(_path, 'manifest.json'),
+      zip.files['manifest.json']._data
     );
     fs.writeFileSync(
-      path.join(_path, "authenticator.js"),
+      path.join(_path, 'authenticator.js'),
       zip.files[`authenticator.js`]._data
     );
     return _path;
@@ -58,22 +58,22 @@ export class Authenticator {
     private readonly permissions: string[]
   ) {
     ensure(
-      "username",
+      'username',
       username,
       isString(),
-      property("length", isGreaterThan(0))
+      property('length', isGreaterThan(0))
     );
     ensure(
-      "password",
+      'password',
       password,
       isString(),
-      property("length", isGreaterThan(0))
+      property('length', isGreaterThan(0))
     );
     ensure(
-      "permissions",
+      'permissions',
       permissions,
       isArray(),
-      property("length", isGreaterThan(0))
+      property('length', isGreaterThan(0))
     );
   }
 
@@ -81,24 +81,24 @@ export class Authenticator {
     const zip: NodeZip = new Zip();
 
     const { name, description, version } = readPkg.sync({
-      cwd: path.resolve(__dirname, ".."),
+      cwd: path.resolve(__dirname, '..'),
     });
 
     zip.file(
-      "manifest.json",
-      Mustache.render(contentsOf("../extension/manifest.mustache.json"), {
+      'manifest.json',
+      Mustache.render(contentsOf('../extension/manifest.mustache.json'), {
         name,
         description,
         permissions: this.permissions
-          .map((permission) => `"${permission}"`)
-          .join(", "),
+          .map(permission => `'${permission}'`)
+          .join(', '),
         version: (coerce(version as string) as SemVer).version,
       })
     );
 
     zip.file(
-      "authenticator.js",
-      Mustache.render(contentsOf("../extension/authenticator.mustache.js"), {
+      'authenticator.js',
+      Mustache.render(contentsOf('../extension/authenticator.mustache.js'), {
         username: this.username,
         password: this.password,
       })
@@ -109,11 +109,11 @@ export class Authenticator {
 }
 
 function contentsOf(fileName: string): string {
-  return fs.readFileSync(path.join(__dirname, fileName)).toString("utf8");
+  return fs.readFileSync(path.join(__dirname, fileName)).toString('utf8');
 }
 
 interface NodeZip {
   file(name: string, contents: string | Buffer): void;
   files(name: string[]): void;
-  generate(options: { base64: boolean; compression: "DEFLATE" }): string;
+  generate(options: { base64: boolean; compression: 'DEFLATE' }): string;
 }
