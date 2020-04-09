@@ -9,9 +9,10 @@
     "lint": "tslint --project tsconfig.json --config tslint.json --format stylish",
     "compile": "tsc --project tsconfig.json",
     "test:spec": "nyc --report-dir ./reports/coverage mocha --require ts-node/register --reporter spec 'spec/**/*.spec.ts'",
-    "test:e2e": "protractor e2e/protractor.conf.js",
+    "test:e2e:protractor": "protractor e2e/protractor/protractor.conf.js",
+    "test:e2e:webdriverio": "wdio e2e/webdriverio/wdio.conf.js",
     "test": "npm run test:spec",
-    "verify": "npm run clean && npm run lint && npm run test:spec && npm run compile && npm run test:e2e",
+    "verify": "npm run clean && npm run lint && npm run test:spec && npm run compile && npm run test:e2e:protractor && npm run test:e2e:webdriverio",
     "publish:reports": "nyc report --reporter=text-lcov | coveralls",
     "commit": "git-cz",
     "semantic-release": "semantic-release",
@@ -45,6 +46,10 @@
     "@types/mocha": "^7.0.2",
     "@types/mustache": "^4.0.1",
     "@types/semver": "^7.1.0",
+    "@wdio/cli": "^6.0.14",
+    "@wdio/local-runner": "^6.0.14",
+    "@wdio/mocha-framework": "^6.0.13",
+    "@wdio/spec-reporter": "^6.0.14",
     "chai": "^4.2.0",
     "chromedriver": "^80.0.2",
     "commitizen": "^4.0.4",
@@ -63,7 +68,8 @@
     "ts-node": "^8.8.2",
     "tslint": "^6.1.1",
     "tslint-microsoft-contrib": "^6.2.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "wdio-chromedriver-service": "^6.0.1"
   },
   "dependencies": {
     "mustache": "^4.0.1",

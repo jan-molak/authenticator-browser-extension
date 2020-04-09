@@ -4,9 +4,9 @@ import { Actor, actorCalled, Cast, engage } from '@serenity-js/core';
 import { LocalServer, ManageALocalServer, StartLocalServer } from '@serenity-js/local-server';
 import { BrowseTheWeb, Navigate, Target, Text } from '@serenity-js/protractor';
 import { by, protractor } from 'protractor';
-import { TestApp } from './TestApp';
+import { TestApp } from '../TestApp';
 
-describe('Chrome Authenticator Extension', function () {
+describe('Chrome Authenticator Extension, when used with Protractor,', function () {
 
     this.timeout(5000);
 

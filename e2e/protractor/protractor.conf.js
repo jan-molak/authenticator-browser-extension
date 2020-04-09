@@ -1,6 +1,6 @@
 require('ts-node/register');
 
-const { Authenticator } = require('../lib');
+const { Authenticator } = require('../../lib');
 
 exports.config = {
     chromeDriver: require('chromedriver/lib/chromedriver').path,
