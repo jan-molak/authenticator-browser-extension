@@ -2,11 +2,11 @@
 
 import 'mocha';
 import 'webdriverio';
-import { BrowserObject, Element } from 'webdriverio';
 
 import { Ensure, equals } from '@serenity-js/assertions';
 import { Ability, Actor, actorCalled, Cast, engage, Interaction, Question, UsesAbilities } from '@serenity-js/core';
 import { LocalServer, ManageALocalServer, StartLocalServer } from '@serenity-js/local-server';
+import { BrowserObject, Element } from 'webdriverio';
 
 import { TestApp } from '../TestApp';
 

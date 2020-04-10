@@ -7,6 +7,7 @@ module.exports = {
     },
     plugins: [
         '@typescript-eslint',
+        'simple-import-sort',
     ],
     extends: [
         'eslint:recommended',
@@ -16,7 +17,13 @@ module.exports = {
     ],
     rules: {
         'indent': 'off',
-        '@typescript-eslint/indent': ["error", 4],
+        '@typescript-eslint/indent': ['error', 4],
+        
+        'quotes': 'off',
+        '@typescript-eslint/quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
+
+        'simple-import-sort/sort': 'error',
+        
         'unicorn/filename-case': [ 'error', {
             'cases': {
                 'pascalCase': true,

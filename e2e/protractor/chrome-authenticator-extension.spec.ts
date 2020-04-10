@@ -1,9 +1,11 @@
 import 'mocha';
+
 import { Ensure, equals } from '@serenity-js/assertions';
 import { Actor, actorCalled, Cast, engage } from '@serenity-js/core';
 import { LocalServer, ManageALocalServer, StartLocalServer } from '@serenity-js/local-server';
 import { BrowseTheWeb, Navigate, Target, Text } from '@serenity-js/protractor';
 import { by, protractor } from 'protractor';
+
 import { TestApp } from '../TestApp';
 
 describe('Chrome Authenticator Extension, when used with Protractor,', function () {
