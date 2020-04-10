@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-use-before-define */
+
 import 'mocha';
 import 'webdriverio';
-import { BrowserObject, Element } from 'webdriverio';
 
 import { Ensure, equals } from '@serenity-js/assertions';
 import { Ability, Actor, actorCalled, Cast, engage, Interaction, Question, UsesAbilities } from '@serenity-js/core';
 import { LocalServer, ManageALocalServer, StartLocalServer } from '@serenity-js/local-server';
+import { BrowserObject, Element } from 'webdriverio';
 
 import { TestApp } from '../TestApp';
 
@@ -61,7 +63,7 @@ const Target = {
 const Text = {
     of: (target: Question<Promise<Element>>) =>
         Question.about<Promise<string>>(`text of ${ target }`, actor =>
-            actor.answer(target).then(el => el.getText()),
+            actor.answer(target).then(element => element.getText()),
         ),
 };
 

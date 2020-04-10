@@ -84,10 +84,10 @@ await puppeteer.launch({
         `--disable-extensions-except=${Authenticator.for(
           "username",
           "password"
-        ).asFileAt("pathToFolder")}`, //Authenticator will generate necessary files in pathToFolder
+        ).asFileAt('./path/to/folder')}`, //Authenticator will generate necessary files in pathToFolder
 
         `--load-extension=${Authenticator.for("username", "password").asFileAt(
-          "pathToFolder"
+          './path/to/folder'
         )}`,
       ],
     });
