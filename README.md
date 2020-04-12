@@ -11,7 +11,7 @@
 
 
 Authenticator is a [web browser extension](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions)
-that enables your WebdriverIO and Protractor-based automated tests to authenticate with web apps
+that enables your WebdriverIO, Protractor and Puppeteer-based automated tests to authenticate with web apps
 using [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication).
 
 Authenticator generates the browser extension dynamically, so you can easily provide the username and password
@@ -72,6 +72,27 @@ exports.config = {
 
     // other Protractor config
 }
+```
+
+### Puppeteer
+
+Import the `authenticator-browser-extension` and generate an expanded `Authenticator` web extension directory before launching a Puppeteer browser:
+
+```javascript
+const { Authenticator } = require('authenticator-browser-extension');
+ 
+const authenticator = Authenticator.for('admin', 'Password123')
+    .asDirectoryAt(`${process.cwd()}/build/puppeteer/authenticator`);
+
+browser = await puppeteer.launch({
+    headless: false,
+
+    args: [
+        `--disable-extensions-except=${authenticator}`,
+        `--load-extension=${authenticator}`,
+        `--no-sandbox`,
+    ],
+});
 ```
 
 ## Known limitations

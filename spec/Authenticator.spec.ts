@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-use-before-define, unicorn/consistent-function-scoping */
+
 import 'mocha';
 
 import { expect } from 'chai';
+import * as fs from 'fs';
+import { createFsFromVolume, DirectoryJSON, Volume } from 'memfs';
 import { given } from 'mocha-testdata';
-import path = require('path');
+import path = require('upath');
 import readPkg = require('read-pkg');                               // eslint-disable-line unicorn/prevent-abbreviations
 import { Authenticator } from '../src';
 
@@ -32,6 +36,91 @@ describe('Authenticator', () => {
             expect(authenticator).to.contain(
                 '{ authCredentials: { username: `user`, password: `pass` }}'
             );
+        });
+    });
+
+    describe('#asFileAt', () => {
+        const cwd = process.cwd();
+        let fakeFS: typeof fs,
+            authenticator: Authenticator;
+
+        beforeEach(() => {
+            fakeFS = fakeFSWith({
+                'extension/authenticator.mustache.js': contentsOf('extension/authenticator.mustache.js'),
+                'extension/manifest.mustache.json': contentsOf('extension/manifest.mustache.json'),
+            }, cwd);
+
+            authenticator = new Authenticator(
+                'user',
+                'pass',
+                ['<all_urls>'],
+                cwd,
+                fakeFS,
+            );
+        });
+
+        it('allows for an extension to be generated as a .crx file at a specified location', () => {
+            authenticator.asFileAt('./build/extensions/authenticator.xpi');
+
+            expect(fakeFS.existsSync(path.resolve(process.cwd(), 'build/extensions/authenticator.xpi'))).equals(true);
+        });
+
+        it('allows for the file mode to be configured', () => {
+            const mode644 = 0o100644;
+
+            authenticator.asFileAt('./build/extensions/authenticator.xpi', mode644);
+
+            const stat = fakeFS.statSync(path.resolve(process.cwd(), 'build/extensions/authenticator.xpi'));
+
+            expect(stat.mode).equals(mode644);
+        });
+
+        it('complains if the relative path is empty', () => {
+            expect(() => authenticator.asFileAt(''))
+                .to.throw('path to extension file should have a property "length" that is greater than 0');
+        });
+    });
+
+    describe('#asDirectoryAt', () => {
+        const cwd = process.cwd();
+        let fakeFS: typeof fs,
+            authenticator: Authenticator;
+
+        beforeEach(() => {
+            fakeFS = fakeFSWith({
+                'extension/authenticator.mustache.js': contentsOf('extension/authenticator.mustache.js'),
+                'extension/manifest.mustache.json': contentsOf('extension/manifest.mustache.json'),
+            }, cwd);
+
+            authenticator = new Authenticator(
+                'user',
+                'pass',
+                ['<all_urls>'],
+                cwd,
+                fakeFS,
+            );
+        });
+
+        it('allows for an extension to be generated in a directory at a specified location', () => {
+            authenticator.asDirectoryAt('./build/extensions/authenticator');
+
+            expect(fakeFS.existsSync(path.resolve(process.cwd(), 'build/extensions/authenticator/manifest.json'))).equals(true);
+            expect(fakeFS.existsSync(path.resolve(process.cwd(), 'build/extensions/authenticator/authenticator.js'))).equals(true);
+        });
+
+        it('allows for the file mode to be configured', () => {
+            const mode644 = 0o440644;
+
+            authenticator.asDirectoryAt('./build/extensions/authenticator', mode644);
+
+            const stat = fakeFS.statSync(path.resolve(process.cwd(), 'build/extensions/authenticator'));
+
+            expect(stat.mode).equals(mode644);
+        });
+
+        it('complains if the relative path is empty', () => {
+            expect(() => authenticator.asDirectoryAt(''))
+                .to.throw('path to destination directory should have a property "length" that is greater than 0');
         });
     });
 
@@ -90,4 +179,12 @@ describe('Authenticator', () => {
         });
         /* eslint-enable @typescript-eslint/indent */
     });
+
+    function fakeFSWith(tree: DirectoryJSON, cwd: string): typeof fs {
+        return createFsFromVolume(Volume.fromJSON(tree, cwd)) as unknown as typeof fs;
+    }
+
+    function contentsOf(pathToFile: string): string {
+        return fs.readFileSync(path.resolve(process.cwd(), pathToFile)).toString('utf-8')
+    }
 });
