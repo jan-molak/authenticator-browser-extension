@@ -1,6 +1,6 @@
 let maxRetries = 3; // todo: configurable?
 
-chrome.webRequest.onAuthRequired.addListener(
+(chrome || browser).webRequest.onAuthRequired.addListener(
     /**
      * @param details - see https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onAuthRequired#details
      */

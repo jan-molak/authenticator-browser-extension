@@ -2,8 +2,8 @@
 
 import { Ensure, equals } from '@serenity-js/assertions';
 import { Ability, Actor, actorCalled, Cast, engage, Interaction, Question, UsesAbilities } from '@serenity-js/core';
-import { LocalServer, ManageALocalServer, StartLocalServer,StopLocalServer } from '@serenity-js/local-server';
-import { Browser,ElementHandle, Page } from 'puppeteer';
+import { LocalServer, ManageALocalServer, StartLocalServer, StopLocalServer } from '@serenity-js/local-server';
+import { Browser, ElementHandle, Page, Response } from 'puppeteer';
 
 import { Authenticator } from '../../src';
 import { TestApp } from '../TestApp';
@@ -14,22 +14,20 @@ const puppeteer = require('puppeteer');
 let page: Page;
 let browser: Browser;
 
-describe('Chrome Authenticator Extension, when used with puppeteer', function () {
+describe('Chrome Authenticator Extension, when used with Puppeteer', function () {
     this.timeout(15000);
 
     before(async () => {
+        const authenticator = Authenticator.for('admin', 'Password123')
+            .asDirectoryAt(`${ process.cwd() }/build/puppeteer/authenticator`);
+
         browser = await puppeteer.launch({
             headless: false,
 
             args: [
-                `--disable-extensions-except=${Authenticator.for(
-                    'admin',
-                    'Password123'
-                ).asFileAt(`${process.cwd()}/build`)}`,
-
-                `--load-extension=${Authenticator.for('admin', 'Password123').asFileAt(
-                    `${process.cwd()}/build`
-                )}`,
+                `--disable-extensions-except=${ authenticator }`,
+                `--load-extension=${ authenticator }`,
+                `--no-sandbox`,
             ],
         });
         page = await browser.newPage();
@@ -43,21 +41,21 @@ describe('Chrome Authenticator Extension, when used with puppeteer', function ()
                     TestApp.allowingUsersAuthenticatedWith({
                         username: 'admin',
                         password: 'Password123',
-                    })
-                )
+                    }),
+                ),
             );
         }
     }
 
     beforeEach(() => engage(new Actors()));
     beforeEach(() =>
-        actorCalled('Dave').attemptsTo(StartLocalServer.onRandomPort())
+        actorCalled('Dave').attemptsTo(StartLocalServer.onRandomPort()),
     );
 
     it(`enables a Chrome web browser-based test to authenticate with a web app`, () =>
         actorCalled('Dave').attemptsTo(
             Navigate.to(LocalServer.url()),
-            Ensure.that(Text.of(TestPage.Title), equals('Authenticated!'))
+            Ensure.that(Text.of(TestPage.Title), equals('Authenticated!')),
         ));
 
     after(async () => await browser.close());
@@ -74,28 +72,29 @@ describe('Chrome Authenticator Extension, when used with puppeteer', function ()
 
 const Navigate = {
     to: (url: Question<string>) =>
-        Interaction.where(`#actor navigates to ${url}`, (actor) =>
+        Interaction.where(`#actor navigates to ${ url }`, actor =>
             actor
                 .answer(url)
-                .then((actualUrl) => BrowseTheWeb.as(actor).get(actualUrl))
+                .then(actualUrl => BrowseTheWeb.as(actor).get(actualUrl))
+                .then((_: Response | null) => void 0),
         ),
 };
 
 const Target = {
     the: (name: string) => ({
         locatedBy: (selector: string) =>
-            Question.about<Promise<ElementHandle>>(`the ${name}`, (actor) =>
-                BrowseTheWeb.as(actor).locate(selector)
+            Question.about<Promise<ElementHandle | null>>(`the ${ name }`, actor =>
+                BrowseTheWeb.as(actor).locate(selector),
             ),
     }),
 };
 
 const Text = {
-    of: (target: Question<Promise<ElementHandle>>) =>
-        Question.about<Promise<string>>(`text of ${target}`, (actor) =>
-            actor.answer(target).then((element) => {
-                return page.evaluate((element_) => element_.textContent, element).then((txt) => txt);
-            })
+    of: (target: Question<Promise<ElementHandle | null>>) =>
+        Question.about<Promise<string>>(`text of ${ target }`, actor =>
+            actor.answer(target).then(element => {
+                return page.evaluate(actualElement => actualElement.textContent, element);
+            }),
         ),
 };
 
@@ -112,13 +111,14 @@ class BrowseTheWeb implements Ability {
         return actor.abilityTo(BrowseTheWeb);
     }
 
-    constructor(private readonly page: Page) {}
+    constructor(private readonly page: Page) {
+    }
 
-    get(destination: string): Promise<any> {
+    get(destination: string): Promise<Response | null> {
         return this.page.goto(destination);
     }
 
-    locate(selector: string): Promise<any> {
+    locate(selector: string): Promise<ElementHandle | null> {
         return this.page.$(selector);
     }
 }
