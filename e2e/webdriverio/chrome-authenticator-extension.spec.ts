@@ -4,13 +4,23 @@ import 'mocha';
 import 'webdriverio';
 
 import { Ensure, equals } from '@serenity-js/assertions';
-import { Ability, Actor, actorCalled, Cast, engage, Interaction, Question, UsesAbilities } from '@serenity-js/core';
+import {
+    Ability,
+    Actor,
+    actorCalled,
+    Cast,
+    Duration,
+    engage,
+    Interaction,
+    Question,
+    UsesAbilities,
+} from '@serenity-js/core';
 import { LocalServer, ManageALocalServer, StartLocalServer } from '@serenity-js/local-server';
 import { BrowserObject, Element } from 'webdriverio';
 
 import { TestApp } from '../TestApp';
 
-describe('Chrome Authenticator Extension, when used with WebDriver.io,', function () {
+describe('Authenticator Browser Extension, when used with WebDriver.io,', function () {
 
     this.timeout(5000);
 
@@ -29,7 +39,7 @@ describe('Chrome Authenticator Extension, when used with WebDriver.io,', functio
     beforeEach(() => engage(new Actors()));
     beforeEach(() => actorCalled('Dave').attemptsTo(StartLocalServer.onRandomPort()));
 
-    it(`enables a Chrome web browser-based test to authenticate with a web app`, () =>
+    it(`enables a web browser-based test to authenticate with a web app`, () =>
         actorCalled('Dave').attemptsTo(
             Navigate.to(LocalServer.url()),
             Ensure.that(Text.of(TestPage.Title), equals('Authenticated!')),
@@ -90,4 +100,15 @@ class BrowseTheWeb implements Ability {
     locate(selector: string | Function | object): Promise<Element> {
         return this.browserInstance.$(selector);
     }
+
+    sleep(durationInMillis: number) {
+        return browser.pause(durationInMillis);
+    }
 }
+
+const Wait = {
+    for: (duration: Duration) =>
+        Interaction.where(`#actor waits for ${ duration }`, actor =>
+            BrowseTheWeb.as(actor).sleep(duration.inMilliseconds()),
+        ),
+};

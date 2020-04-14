@@ -6,5 +6,10 @@
   "permissions": [ {{{ permissions }}}, "webRequest", "webRequestBlocking", "proxy" ],
   "background": {
     "scripts": [ "authenticator.js" ]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{{ name }}@smartcodeltd.co.uk"
+    }
   }
 }

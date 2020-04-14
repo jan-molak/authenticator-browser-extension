@@ -9,7 +9,7 @@ exports.config = {
     maxInstances: 1,
 
     capabilities: [{
-    
+
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: [
@@ -22,9 +22,11 @@ exports.config = {
                 Authenticator.for('admin', 'Password123').asBase64()
             ]
         }
+    }, {
+        browserName: 'firefox',
     }],
 
-    logLevel: 'info',
+    logLevel: 'debug',
 
     waitforTimeout: 10000,
 
@@ -32,7 +34,27 @@ exports.config = {
 
     connectionRetryCount: 3,
 
-    services: ['chromedriver'],
+    // Geckodriver config
+    path: '/',
+
+    // NOTE: Make sure to use Firefox Developer Edition - https://www.mozilla.org/en-GB/firefox/developer/
+    //       and either add it to the PATH env variable, or specify below
+    //       Only Firefox Developer Edition supports custom, unsigned extensions.
+    // geckoDriverArgs: ['--binary=/path/to/developer/edition/of/firefox'],
+
+    services: [
+        'chromedriver',
+        'geckodriver',
+
+        ['firefox-profile', {
+            extensions: [
+                Authenticator.for('admin', 'Password123')
+                    .asFileAt('build/wdio/authenticator.xpi')
+            ],
+            // NOTE: this option is required to load an unsigned extension
+            'xpinstall.signatures.required': false
+        }],
+    ],
     
     framework: 'mocha',
     reporters: ['spec'],

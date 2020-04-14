@@ -1,3 +1,5 @@
+// todo: "pending" https://github.com/mdn/webextensions-examples/blob/master/stored-credentials/auth.js
+
 let maxRetries = 3; // todo: configurable?
 
 (chrome || browser).webRequest.onAuthRequired.addListener(

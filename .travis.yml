@@ -17,3 +17,4 @@ branches:
     - /^v\d+\.\d+\.\d+$/
 addons:
   chrome: stable
+  firefox: latest-dev
