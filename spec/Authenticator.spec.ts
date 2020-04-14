@@ -17,30 +17,38 @@ describe('Authenticator', () => {
 
     describe('#asBase64', () => {
 
-        it('allows for an extension to be generated as a base64-encoded zip', () => {
-            const data = Authenticator.for('user', 'pass').asBase64();
+        describe('dynamically generates a base64-encoded web extension file that', () => {
 
-            const zip = new Zip(data, {base64: true, checkCRC32: true});
+            it('contains a manifest file with the name, description and version of the project using the Authenticator', () => {
+                const zip = asZip(Authenticator.for('user', 'pass').asBase64());
+                const pkg = readPkg.sync({ cwd: path.resolve(__dirname, '..') }); // eslint-disable-line unicorn/prevent-abbreviations
 
-            const pkg = readPkg.sync({ cwd: path.resolve(__dirname, '..') });   // eslint-disable-line unicorn/prevent-abbreviations
+                const manifest = JSON.parse(zip.files['manifest.json']._data);
 
-            const manifest = JSON.parse(zip.files['manifest.json']._data);
+                expect(manifest.description).to.deep.equal(pkg.description);
+                expect(manifest.name).to.deep.equal(pkg.name);
+                expect(manifest.version).to.match(/(\d\.?){3}/);
+            });
 
-            expect(manifest.description).to.deep.equal(pkg.description);
-            expect(manifest.name).to.deep.equal(pkg.name);
-            expect(manifest.version).to.match(/(\d\.?){3}/);
+            it('contains an authenticator script that includes the desired credentials', () => {
+                const zip = asZip(Authenticator.for('user', 'pass').asBase64());
 
-            // authenticator
-            const authenticator = zip.files['authenticator.js']._data;
+                // authenticator script
+                const authenticator = zip.files['authenticator.js']._data;
 
-            expect(authenticator).to.contain(
-                '{ authCredentials: { username: `user`, password: `pass` }}'
-            );
+                expect(authenticator).to.contain(
+                    '{ authCredentials: { username: `user`, password: `pass` }}'
+                );
+            });
         });
     });
 
     describe('#asFileAt', () => {
-        const cwd = process.cwd();
+        const
+            cwd = process.cwd(),
+            relativePathToExtensionFile = `./build/extensions/authenticator.xpi`,
+            absolutePathToExtensionFile = path.join(process.cwd(), relativePathToExtensionFile);
+
         let fakeFS: typeof fs,
             authenticator: Authenticator;
 
@@ -59,18 +67,19 @@ describe('Authenticator', () => {
             );
         });
 
-        it('allows for an extension to be generated as a .crx file at a specified location', () => {
-            authenticator.asFileAt('./build/extensions/authenticator.xpi');
+        it('generates an .xpi file at a specified location', () => {
+            const result = authenticator.asFileAt(relativePathToExtensionFile);
 
-            expect(fakeFS.existsSync(path.resolve(process.cwd(), 'build/extensions/authenticator.xpi'))).equals(true);
+            expect(result).to.equal(absolutePathToExtensionFile);
+            expect(fakeFS.existsSync(result)).equals(true);
         });
 
         it('allows for the file mode to be configured', () => {
             const mode644 = 0o100644;
 
-            authenticator.asFileAt('./build/extensions/authenticator.xpi', mode644);
+            const result = authenticator.asFileAt(relativePathToExtensionFile, mode644);
 
-            const stat = fakeFS.statSync(path.resolve(process.cwd(), 'build/extensions/authenticator.xpi'));
+            const stat = fakeFS.statSync(result);
 
             expect(stat.mode).equals(mode644);
         });
@@ -82,11 +91,16 @@ describe('Authenticator', () => {
     });
 
     describe('#asDirectoryAt', () => {
-        const cwd = process.cwd();
+        const
+            cwd = process.cwd(),
+            relativePathToExtensionDirectory = `./build/extensions/authenticator`,
+            absolutePathToExtensionDirectory = path.join(process.cwd(), relativePathToExtensionDirectory);
+
         let fakeFS: typeof fs,
             authenticator: Authenticator;
 
         beforeEach(() => {
+            // copy the template files to fakeFS so that Authenticator can load them
             fakeFS = fakeFSWith({
                 'extension/authenticator.mustache.js': contentsOf('extension/authenticator.mustache.js'),
                 'extension/manifest.mustache.json': contentsOf('extension/manifest.mustache.json'),
@@ -101,19 +115,21 @@ describe('Authenticator', () => {
             );
         });
 
-        it('allows for an extension to be generated in a directory at a specified location', () => {
-            authenticator.asDirectoryAt('./build/extensions/authenticator');
+        it('allows for an extension directory to be generated in a directory at a specified location', () => {
+            const result = authenticator.asDirectoryAt(relativePathToExtensionDirectory);
 
-            expect(fakeFS.existsSync(path.resolve(process.cwd(), 'build/extensions/authenticator/manifest.json'))).equals(true);
-            expect(fakeFS.existsSync(path.resolve(process.cwd(), 'build/extensions/authenticator/authenticator.js'))).equals(true);
+            expect(result).to.equal(absolutePathToExtensionDirectory);
+
+            expect(fakeFS.existsSync(path.resolve(absolutePathToExtensionDirectory, 'manifest.json'))).equals(true);
+            expect(fakeFS.existsSync(path.resolve(absolutePathToExtensionDirectory, 'authenticator.js'))).equals(true);
         });
 
         it('allows for the file mode to be configured', () => {
             const mode644 = 0o440644;
 
-            authenticator.asDirectoryAt('./build/extensions/authenticator', mode644);
+            const result = authenticator.asDirectoryAt(relativePathToExtensionDirectory, mode644);
 
-            const stat = fakeFS.statSync(path.resolve(process.cwd(), 'build/extensions/authenticator'));
+            const stat = fakeFS.statSync(result);
 
             expect(stat.mode).equals(mode644);
         });
@@ -127,9 +143,7 @@ describe('Authenticator', () => {
     describe('permissions', () => {
 
         it('applies to all URLs by default', () => {
-            const data = Authenticator.for('user', 'pass').asBase64();
-
-            const zip = new Zip(data, {base64: true, checkCRC32: true});
+            const zip = asZip(Authenticator.for('user', 'pass').asBase64());
 
             const manifest = JSON.parse(zip.files['manifest.json']._data);
 
@@ -137,9 +151,7 @@ describe('Authenticator', () => {
         });
 
         it('allows the developer to restrict the extension to specific URLs', () => {
-            const data = Authenticator.for('user', 'pass', [ 'http://localhost/' ]).asBase64();
-
-            const zip = new Zip(data, {base64: true, checkCRC32: true});
+            const zip = asZip(Authenticator.for('user', 'pass', [ 'http://localhost/' ]).asBase64());
 
             const manifest = JSON.parse(zip.files['manifest.json']._data);
 
@@ -179,6 +191,10 @@ describe('Authenticator', () => {
         });
         /* eslint-enable @typescript-eslint/indent */
     });
+
+    function asZip(data: string): { files: {[filename: string]: { _data: string }}} {
+        return new Zip(data, { base64: true, checkCRC32: true });
+    }
 
     function fakeFSWith(tree: DirectoryJSON, cwd: string): typeof fs {
         return createFsFromVolume(Volume.fromJSON(tree, cwd)) as unknown as typeof fs;
