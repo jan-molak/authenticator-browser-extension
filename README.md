@@ -11,14 +11,21 @@
 
 
 Authenticator is a [web browser extension](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions)
-that enables your WebdriverIO, Protractor and Puppeteer-based automated tests to authenticate with web apps
-using [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication).
+that enables your automated tests to authenticate with web apps using [HTTP authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication).
 
 Authenticator generates the browser extension dynamically, so you can easily provide the username and password
 via a config file or env variables.
 
-Authenticator currently supports:
-- [Google Chrome](https://www.google.co.uk/chrome/)
+Authenticator is [proven to work](https://github.com/jan-molak/authenticator-browser-extension/tree/master/e2e) with following test frameworks:
+- [WebdriverIO](https://webdriver.io/) ([example](https://github.com/jan-molak/authenticator-browser-extension/tree/master/e2e/webdriverio))
+- [Protractor](https://www.protractortest.org/#/) ([example](https://github.com/jan-molak/authenticator-browser-extension/tree/master/e2e/protractor))
+- [Puppeteer](https://github.com/puppeteer/puppeteer) ([example](https://github.com/jan-molak/authenticator-browser-extension/tree/master/e2e/puppeteer))
+
+and following browsers:
+- [Google Chrome](https://www.google.co.uk/chrome/) ([example 1](https://github.com/jan-molak/authenticator-browser-extension/tree/master/e2e/protractor), [example 2](https://github.com/jan-molak/authenticator-browser-extension/tree/master/e2e/webdriverio))
+- [Firefox Developer Edition](https://www.mozilla.org/en-GB/firefox/developer/) ([example](https://github.com/jan-molak/authenticator-browser-extension/tree/master/e2e/webdriverio))
+
+It's possible that Authenticator will work with other browsers supporting [Web Extensions](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions) and [`webRequest.onAuthRequired`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onAuthRequired) API. However, I didn't have a chance to verify it yet. 
 
 ## Usage
 
@@ -103,6 +110,12 @@ Chrome doesn't support browser extensions when running in [headless mode](https:
 
 The best way to get around this limitation is to use Chrome together with
 the [X Virtual Framebuffer (XVFB)](https://en.wikipedia.org/wiki/Xvfb).
+
+### Firefox
+
+Authenticator generates the web extension dynamically on your machine, which means that the extension is not signed by Mozilla. For this reason, in order to use Authenticator, you need to configure Firefox with a `xpinstall.signatures.required` flag set to `false` (see [example](https://github.com/jan-molak/authenticator-browser-extension/tree/master/e2e/webdriverio)).
+
+**NOTE**: Firefox 48 (Pushed from Firefox 46) and newer do not allow for unsigned extensions to be installed, so you need to use [Firefox Developer Edition](https://www.mozilla.org/en-GB/firefox/developer/) instead.
 
 ## Your feedback matters!
 
