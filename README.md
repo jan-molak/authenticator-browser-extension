@@ -115,7 +115,7 @@ the [X Virtual Framebuffer (XVFB)](https://en.wikipedia.org/wiki/Xvfb).
 
 Authenticator generates the web extension dynamically on your machine, which means that the extension is not signed by Mozilla. For this reason, in order to use Authenticator, you need to configure Firefox with a `xpinstall.signatures.required` flag set to `false` (see [example](https://github.com/jan-molak/authenticator-browser-extension/tree/master/e2e/webdriverio)).
 
-**NOTE**: Firefox 48 (Pushed from Firefox 46) and newer do not allow for unsigned extensions to be installed, so you need to use [Firefox Developer Edition](https://www.mozilla.org/en-GB/firefox/developer/) instead.
+**NOTE**: Firefox 48 (Pushed from Firefox 46) and newer [do not allow for unsigned extensions to be installed](https://wiki.mozilla.org/Add-ons/Extension_Signing#Timeline), so you need to use [Firefox Developer Edition](https://www.mozilla.org/en-GB/firefox/developer/) instead.
 
 ## Your feedback matters!
 

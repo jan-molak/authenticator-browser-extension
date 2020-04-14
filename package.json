@@ -4,6 +4,9 @@
   "description": "Enables your browser-based automated tests to authenticate with your web app.",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
+  "funding": {
+    "url" : "https://github.com/sponsors/jan-molak"
+  },
   "scripts": {
     "clean": "rimraf build reports",
     "lint": "eslint . --ext ts",
