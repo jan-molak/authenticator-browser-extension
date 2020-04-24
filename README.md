@@ -27,6 +27,12 @@ and following browsers:
 
 It's possible that Authenticator will work with other browsers supporting [Web Extensions](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions) and [`webRequest.onAuthRequired`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onAuthRequired) API. However, I didn't have a chance to verify it yet. 
 
+## For Enterprise
+
+<a href="https://tidelift.com/subscription/pkg/npm-authenticator-browser-extension?utm_source=npm-authenticator-browser-extension&utm_medium=referral&utm_campaign=enterprise&utm_term=repo" target="_blank"><img width="163" height="24" src="https://cdn2.hubspot.net/hubfs/4008838/website/logos/logos_for_download/Tidelift_primary-logo.png" class="tidelift-logo" /></a>
+
+Authenticator is available as part of the [Tidelift Subscription](https://tidelift.com/subscription/pkg/npm-authenticator-browser-extension?utm_source=npm-authenticator-browser-extension&utm_medium=referral&utm_campaign=enterprise&utm_term=repo). The maintainers of Authenticator and thousands of other packages are working with Tidelift to deliver one enterprise subscription that covers all of the open source you use. If you want the flexibility of open source and the confidence of commercial-grade software, this is for you. [Learn more.](https://tidelift.com/subscription/pkg/npm-authenticator-browser-extension?utm_source=npm-authenticator-browser-extension&utm_medium=referral&utm_campaign=enterprise&utm_term=repo)
+
 ## Usage
 
 The best place to look for usage examples is the [e2e test suite](https://github.com/jan-molak/authenticator-browser-extension/tree/master/e2e).
