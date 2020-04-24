@@ -35,6 +35,12 @@ Authenticator is available as part of the [Tidelift Subscription](https://tideli
 
 ## Usage
 
+Install the module from npm:
+
+```
+npm install --save-dev authenticator-browser-extension
+```
+
 The best place to look for usage examples is the [e2e test suite](https://github.com/jan-molak/authenticator-browser-extension/tree/master/e2e).
 
 ### WebdriverIO
