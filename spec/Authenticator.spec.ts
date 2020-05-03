@@ -167,7 +167,7 @@ describe('Authenticator', () => {
 
     describe('when handling errors', () => {
 
-        /* eslint-disable @typescript-eslint/indent */
+        /* eslint-disable @typescript-eslint/indent, unicorn/no-null */
         given([
             { value: null,      expected: 'username should be a string',                                        },
             { value: undefined, expected: 'username should be a string',                                        },

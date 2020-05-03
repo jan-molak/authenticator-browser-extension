@@ -76,7 +76,7 @@ const Navigate = {
             actor
                 .answer(url)
                 .then(actualUrl => BrowseTheWeb.as(actor).get(actualUrl))
-                .then((_: Response | null) => void 0),
+                .then((_: Response | null) => void 0),          // eslint-disable-line @typescript-eslint/no-unused-vars
         ),
 };
 
