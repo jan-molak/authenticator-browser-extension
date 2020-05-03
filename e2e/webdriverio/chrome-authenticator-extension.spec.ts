@@ -106,7 +106,7 @@ class BrowseTheWeb implements Ability {
     }
 }
 
-const Wait = {
+const Wait = {                                                  // eslint-disable-line @typescript-eslint/no-unused-vars
     for: (duration: Duration) =>
         Interaction.where(`#actor waits for ${ duration }`, actor =>
             BrowseTheWeb.as(actor).sleep(duration.inMilliseconds()),
