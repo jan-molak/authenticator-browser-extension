@@ -74,7 +74,7 @@
     "express-basic-auth": "^1.2.0",
     "geckodriver": "^1.19.1",
     "memfs": "^3.2.0",
-    "mocha": "^7.2.0",
+    "mocha": "^8.0.1",
     "mocha-testdata": "^1.2.0",
     "nyc": "^15.1.0",
     "protractor": "^7.0.0",
