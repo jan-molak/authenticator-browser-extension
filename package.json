@@ -63,7 +63,7 @@
     "@wdio/mocha-framework": "^6.2.0",
     "@wdio/spec-reporter": "^6.1.23",
     "chai": "^4.2.0",
-    "chromedriver": "^83.0.1",
+    "chromedriver": "^84.0.1",
     "commitizen": "^4.1.2",
     "coveralls": "^3.1.0",
     "cz-conventional-changelog": "^3.2.0",
