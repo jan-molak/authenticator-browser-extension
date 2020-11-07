@@ -21,8 +21,7 @@
     "verify": "npm run clean && npm run lint && npm run test:spec && npm run compile && npm run test:e2e",
     "publish:reports": "nyc report --reporter=text-lcov | coveralls",
     "commit": "git-cz",
-    "semantic-release": "semantic-release",
-    "travis-deploy-once": "travis-deploy-once"
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
@@ -82,7 +81,6 @@
     "rimraf": "^3.0.2",
     "semantic-release": "^17.1.2",
     "semantic-release-cli": "^5.4.0",
-    "travis-deploy-once": "^5.0.11",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3",
     "webdriverio": "^6.6.0",

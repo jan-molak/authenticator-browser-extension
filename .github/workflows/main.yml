@@ -30,3 +30,38 @@ jobs:
       - run: xvfb-run npm run verify
         env:
           CI: true
+      - uses: actions/upload-artifact@v2
+        if: matrix.node-version == '14.x'
+        with:
+          name: artifacts
+          path: |
+            lib
+            reports
+
+release:
+  needs: [ verify ]
+  runs-on: ubuntu-latest
+  if: github.ref == 'refs/heads/master'
+  steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+    - uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - run: npm ci
+    - uses: actions/download-artifact@v2
+      with:
+        name: artifacts
+    - run: npm run publish:reports
+      env:
+        COVERALLS_REPO_TOKEN: ${{secrets.COVERALLS_REPO_TOKEN}}
+    - run: npx semantic-release
+      env:
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+        GH_TOKEN: ${{secrets.GH_TOKEN}}
