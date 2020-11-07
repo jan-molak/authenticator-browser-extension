@@ -36,6 +36,7 @@ jobs:
           name: artifacts
           path: |
             lib
+            .nyc_output
             reports
 
   release:
