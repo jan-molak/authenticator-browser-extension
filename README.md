@@ -1,7 +1,7 @@
 # Authenticator (Browser Extension)
 
 [![npm version](https://badge.fury.io/js/authenticator-browser-extension.svg)](https://badge.fury.io/js/authenticator-browser-extension)
-[![Build Status](https://travis-ci.org/jan-molak/authenticator-browser-extension.svg?branch=master)](https://travis-ci.org/jan-molak/authenticator-browser-extension)
+[![Build Status](https://github.com/jan-molak/authenticator-browser-extension/workflows/build/badge.svg)](https://github.com/jan-molak/authenticator-browser-extension/actions)
 [![Coverage Status](https://coveralls.io/repos/github/jan-molak/authenticator-browser-extension/badge.svg)](https://coveralls.io/github/jan-molak/authenticator-browser-extension)
 [![npm](https://img.shields.io/npm/dm/authenticator-browser-extension.svg)](https://npm-stat.com/charts.html?package=authenticator-browser-extension)
 [![Known Vulnerabilities](https://snyk.io/test/github/jan-molak/authenticator-browser-extension/badge.svg)](https://snyk.io/test/github/jan-molak/authenticator-browser-extension)
