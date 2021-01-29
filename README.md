@@ -47,7 +47,7 @@ The best place to look for usage examples is the [e2e test suite](https://github
 
 Import the `authenticator-browser-extension` in the [`wdio.conf.js`](https://webdriver.io/docs/options.html) file and add `Authenticator` to the list of Chrome extensions:
 
-```javascript
+```typescript
 // wdio.conf.js
 
 const { Authenticator } = require('authenticator-browser-extension');
@@ -72,7 +72,7 @@ exports.config = {
 
 Import the `authenticator-browser-extension` in the [`protractor.conf.js`](https://www.protractortest.org/#/api-overview#example-config-file) file and add `Authenticator` to the list of Chrome extensions:
 
-```javascript
+```typescript
 // protractor.conf.js
 
 const { Authenticator } = require('authenticator-browser-extension');
@@ -97,7 +97,7 @@ exports.config = {
 
 Import the `authenticator-browser-extension` and generate an expanded `Authenticator` web extension directory before launching a Puppeteer browser:
 
-```javascript
+```typescript
 const { Authenticator } = require('authenticator-browser-extension');
  
 const authenticator = Authenticator.for('admin', 'Password123')
@@ -112,6 +112,31 @@ browser = await puppeteer.launch({
         `--no-sandbox`,
     ],
 });
+```
+
+### Playwright
+
+Requires launching a [persistent browser context instance](https://playwright.dev/docs/api/class-browsertype?_highlight=persistent#browsertypelaunchpersistentcontextuserdatadir-options) containing the `Authenticator` extension. In every other way a carbon copy of the Puppeteer prototype.  
+
+```typescript
+const extensionDirectory = `${process.cwd()}/build/playwright/authenticator`;
+
+const authenticator = Authenticator.for(
+    'admin',
+    'Password123'
+).asDirectoryAt(extensionDirectory);
+
+browser = await playwright['chromium'].launchPersistentContext(
+    extensionDirectory,
+    {
+        args: [
+            `--disable-extensions-except=${authenticator}`,
+            `--load-extension=${authenticator}`,
+            `--no-sandbox`,
+        ],
+        headless: false,
+    }
+);
 ```
 
 ## Known limitations
