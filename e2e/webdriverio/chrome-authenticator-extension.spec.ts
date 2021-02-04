@@ -16,7 +16,7 @@ import {
     UsesAbilities,
 } from '@serenity-js/core';
 import { LocalServer, ManageALocalServer, StartLocalServer } from '@serenity-js/local-server';
-import { BrowserObject, Element } from 'webdriverio';
+import { BrowserObject, Element, MultiRemoteBrowser } from 'webdriverio';
 
 import { TestApp } from '../TestApp';
 
@@ -82,7 +82,7 @@ const TestPage = {
 };
 
 class BrowseTheWeb implements Ability {
-    static using(browserInstance: BrowserObject) {
+    static using(browserInstance: BrowserObject | MultiRemoteBrowser) {
         return new BrowseTheWeb(browserInstance);
     }
 
@@ -90,7 +90,7 @@ class BrowseTheWeb implements Ability {
         return actor.abilityTo(BrowseTheWeb);
     }
 
-    constructor(private readonly browserInstance: BrowserObject) {
+    constructor(private readonly browserInstance: BrowserObject | MultiRemoteBrowser) {
     }
 
     get(destination: string): Promise<void> {
@@ -102,7 +102,7 @@ class BrowseTheWeb implements Ability {
     }
 
     sleep(durationInMillis: number) {
-        return browser.pause(durationInMillis);
+        return this.browserInstance.pause(durationInMillis);
     }
 }
 

@@ -22,7 +22,9 @@ module.exports = {
         'quotes': 'off',
         '@typescript-eslint/quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
 
-        'simple-import-sort/sort': 'error',
+        'simple-import-sort/imports': 'error',
+
+        'unicorn/empty-brace-spaces': 'off',
         
         'unicorn/filename-case': [ 'error', {
             'cases': {

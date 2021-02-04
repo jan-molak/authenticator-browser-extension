@@ -3,13 +3,13 @@
 import { Ensure, equals } from '@serenity-js/assertions';
 import { Ability, Actor, actorCalled, Cast, engage, Interaction, Question, UsesAbilities } from '@serenity-js/core';
 import { LocalServer, ManageALocalServer, StartLocalServer, StopLocalServer } from '@serenity-js/local-server';
-import { Browser, ElementHandle, Page, Response } from 'puppeteer';
+import { Browser, ElementHandle, HTTPResponse, Page } from 'puppeteer/lib/cjs/puppeteer/api-docs-entry';
+
+/* eslint-disable-next-line @typescript-eslint/no-var-requires */
+const puppeteer = require('puppeteer');
 
 import { Authenticator } from '../../src';
 import { TestApp } from '../TestApp';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const puppeteer = require('puppeteer');
 
 let page: Page;
 let browser: Browser;
@@ -23,7 +23,6 @@ describe('Chrome Authenticator Extension, when used with Puppeteer', function ()
 
         browser = await puppeteer.launch({
             headless: false,
-
             args: [
                 `--disable-extensions-except=${ authenticator }`,
                 `--load-extension=${ authenticator }`,
@@ -76,7 +75,7 @@ const Navigate = {
             actor
                 .answer(url)
                 .then(actualUrl => BrowseTheWeb.as(actor).get(actualUrl))
-                .then((_: Response | null) => void 0),          // eslint-disable-line @typescript-eslint/no-unused-vars
+                .then((_: HTTPResponse | null) => void 0),          // eslint-disable-line @typescript-eslint/no-unused-vars
         ),
 };
 
@@ -93,7 +92,7 @@ const Text = {
     of: (target: Question<Promise<ElementHandle | null>>) =>
         Question.about<Promise<string>>(`text of ${ target }`, actor =>
             actor.answer(target).then(element => {
-                return page.evaluate(actualElement => actualElement.textContent, element);
+                return page.evaluate((actualElement: any) => actualElement.textContent, element);
             }),
         ),
 };
@@ -114,7 +113,7 @@ class BrowseTheWeb implements Ability {
     constructor(private readonly page: Page) {
     }
 
-    get(destination: string): Promise<Response | null> {
+    get(destination: string): Promise<HTTPResponse | null> {
         return this.page.goto(destination);
     }
 
