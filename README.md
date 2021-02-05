@@ -97,7 +97,8 @@ exports.config = {
 
 Import the `authenticator-browser-extension` and generate an expanded `Authenticator` web extension directory before launching a Puppeteer browser:
 
-```javascript
+```typescript
+// puppeteer/chrome-authenticator-extension.spec.ts
 const { Authenticator } = require('authenticator-browser-extension');
  
 const authenticator = Authenticator.for('admin', 'Password123')
@@ -112,6 +113,32 @@ browser = await puppeteer.launch({
         `--no-sandbox`,
     ],
 });
+```
+
+### Playwright
+
+Requires launching a [persistent browser context instance](https://playwright.dev/docs/api/class-browsertype?_highlight=persistent#browsertypelaunchpersistentcontextuserdatadir-options) containing the `Authenticator` extension. In every other way a carbon copy of the Puppeteer prototype.  
+
+```typescript
+// playwright/chrome-authenticator-extension.spec.ts
+const extensionDirectory = `${process.cwd()}/build/playwright/authenticator`;
+
+const authenticator = Authenticator.for(
+    'admin',
+    'Password123'
+).asDirectoryAt(extensionDirectory);
+
+browser = await playwright['chromium'].launchPersistentContext(
+    extensionDirectory,
+    {
+        args: [
+            `--disable-extensions-except=${authenticator}`,
+            `--load-extension=${authenticator}`,
+            `--no-sandbox`,
+        ],
+        headless: false,
+    }
+);
 ```
 
 ## Known limitations
