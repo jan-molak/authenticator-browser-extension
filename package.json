@@ -68,7 +68,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.19.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
-    "eslint-plugin-unicorn": "^27.0.0",
+    "eslint-plugin-unicorn": "^28.0.1",
     "express": "^4.17.1",
     "express-basic-auth": "^1.2.0",
     "geckodriver": "^1.22.1",
