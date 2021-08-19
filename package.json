@@ -15,7 +15,7 @@
     "test:spec": "nyc --report-dir ./reports/coverage mocha 'spec/**/*.spec.ts'",
     "test:e2e": "npm run test:e2e:protractor && npm run test:e2e:wdio && npm run test:e2e:puppeteer && npm run test:e2e:playwright",
     "test:e2e:protractor": "protractor e2e/protractor/protractor.conf.js",
-    "test:e2e:wdio": "wdio e2e/webdriverio/wdio.conf.js",
+    "test:e2e:wdio": "wdio e2e/webdriverio/wdio.conf.ts",
     "test:e2e:playwright": "mocha e2e/playwright/chrome-authenticator-extension.spec.ts",
     "test:e2e:puppeteer": "mocha e2e/puppeteer/chrome-authenticator-extension.spec.ts",
     "test": "npm run test:spec",
