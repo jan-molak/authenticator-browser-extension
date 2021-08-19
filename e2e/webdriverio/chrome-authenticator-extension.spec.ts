@@ -22,7 +22,7 @@ import { TestApp } from '../TestApp';
 
 describe('Authenticator Browser Extension, when used with WebDriver.io,', function () {
 
-    this.timeout(5000);
+    this.timeout(30_000);
 
     class Actors implements Cast {
         prepare(actor: Actor): Actor {
