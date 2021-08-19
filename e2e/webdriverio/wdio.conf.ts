@@ -1,4 +1,5 @@
-const { Authenticator } = require('../../lib');
+/* eslint-disable unicorn/prevent-abbreviations */
+import { Authenticator } from '../../lib';
 
 exports.config = {
     runner: 'local',
