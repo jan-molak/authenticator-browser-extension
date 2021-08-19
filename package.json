@@ -76,7 +76,7 @@
     "mocha": "^8.3.2",
     "mocha-testdata": "^1.2.0",
     "nyc": "^15.1.0",
-    "playwright": "^1.8.0",
+    "playwright": "^1.12.3",
     "protractor": "^7.0.0",
     "puppeteer": "^7.1.0",
     "rimraf": "^3.0.2",
