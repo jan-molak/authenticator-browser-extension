@@ -23,8 +23,8 @@ exports.config = {
                 Authenticator.for('admin', 'Password123').asBase64()
             ]
         }
-    // }, {
-    //     browserName: 'firefox',
+    }, {
+        browserName: 'firefox',
     }],
 
     logLevel: 'debug',
