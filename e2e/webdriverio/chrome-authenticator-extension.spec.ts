@@ -6,9 +6,9 @@ import 'webdriverio';
 import { Ensure, equals } from '@serenity-js/assertions';
 import { Actor, actorCalled, Cast, engage } from '@serenity-js/core';
 import { LocalServer, ManageALocalServer, StartLocalServer } from '@serenity-js/local-server';
+import { BrowseTheWeb, by, Navigate, Target, Text } from '@serenity-js/webdriverio';
 
 import { TestApp } from '../TestApp';
-import { BrowseTheWeb, by, Navigate, Target, Text } from '@serenity-js/webdriverio';
 
 describe('Authenticator Browser Extension, when used with WebDriver.io,', function () {
 
