@@ -78,7 +78,7 @@
     "nyc": "^15.1.0",
     "playwright": "^1.12.3",
     "protractor": "^7.0.0",
-    "puppeteer": "^7.1.0",
+    "puppeteer": "^10.2.0",
     "rimraf": "^3.0.2",
     "semantic-release": "^17.4.5",
     "semantic-release-cli": "^5.4.3",
