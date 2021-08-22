@@ -1,6 +1,7 @@
 /* eslint-disable unicorn/prevent-abbreviations */
-import { Authenticator } from '../../lib';
 import { ConsoleReporter } from '@serenity-js/console-reporter';
+
+import { Authenticator } from '../../lib';
 
 exports.config = {
     runner: 'local',
