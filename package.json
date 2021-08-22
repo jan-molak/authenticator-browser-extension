@@ -45,7 +45,9 @@
   "devDependencies": {
     "@serenity-js/assertions": "^2.30.3",
     "@serenity-js/core": "^2.30.3",
+    "@serenity-js/console-reporter": "^2.30.3",
     "@serenity-js/local-server": "^2.30.3",
+    "@serenity-js/mocha": "^2.30.3",
     "@serenity-js/protractor": "^2.30.3",
     "@serenity-js/webdriverio": "^2.30.3",
     "@types/chai": "^4.2.16",

@@ -1,11 +1,18 @@
 /* eslint-disable unicorn/prevent-abbreviations */
 import { Authenticator } from '../../lib';
+import { ConsoleReporter } from '@serenity-js/console-reporter';
 
 exports.config = {
     runner: 'local',
     specs: [
         'e2e/webdriverio/**/*.spec.ts'
     ],
+
+    serenity: {
+        crew: [
+            ConsoleReporter.withDefaultColourSupport(),
+        ]
+    },
 
     maxInstances: 1,
 
@@ -56,8 +63,8 @@ exports.config = {
             'xpinstall.signatures.required': false
         }],
     ],
-    
-    framework: 'mocha',
+
+    framework: '@serenity-js/webdriverio',
     reporters: ['spec'],
  
     mochaOpts: {
