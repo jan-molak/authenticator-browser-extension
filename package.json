@@ -82,7 +82,7 @@
     "rimraf": "^3.0.2",
     "semantic-release": "^17.4.5",
     "semantic-release-cli": "^5.4.3",
-    "ts-node": "^9.1.1",
+    "ts-node": "^10.2.1",
     "typescript": "^4.3.5",
     "wdio-chromedriver-service": "^7.2.0",
     "wdio-geckodriver-service": "^2.0.3",
