@@ -6,7 +6,7 @@ import 'webdriverio';
 import { Ensure, equals } from '@serenity-js/assertions';
 import { Actor, actorCalled, Cast, engage, Log, Question } from '@serenity-js/core';
 import { LocalServer, ManageALocalServer, StartLocalServer } from '@serenity-js/local-server';
-import { BrowseTheWeb, by, Navigate, Target, Text } from '@serenity-js/webdriverio';
+import { BrowseTheWeb, by, Navigate, Target, Text, Website } from '@serenity-js/webdriverio';
 
 import { TestApp } from '../TestApp';
 
@@ -31,8 +31,22 @@ describe('Authenticator Browser Extension, when used with WebDriver.io,', functi
 
     it(`enables a web browser-based test to authenticate with a web app`, () =>
         actorCalled('Dave').attemptsTo(
+            Log.the(
+                Website.url(),
+                Website.title(),
+                WebsiteHead(),
+                WebsiteBody()
+            ),
+
             Navigate.to(LocalServer.url()),
-            Log.the(BrowserDom()),
+
+            Log.the(
+                Website.url(),
+                Website.title(),
+                WebsiteHead(),
+                WebsiteBody()
+            ),
+
             Ensure.that(Text.of(TestPage.Title), equals('Authenticated!')),
         ));
 });
@@ -41,7 +55,12 @@ const TestPage = {
     Title: Target.the('header').located(by.css('h1')),
 };
 
-const BrowserDom = () =>
+const WebsiteHead = () =>
+    Question.about('browser DOM', actor => {
+        return BrowseTheWeb.as(actor).browser.$('head').getHTML(true);
+    });
+
+const WebsiteBody = () =>
     Question.about('browser DOM', actor => {
         return BrowseTheWeb.as(actor).browser.$('body').getHTML(true);
     });
