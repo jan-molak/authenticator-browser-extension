@@ -92,7 +92,7 @@
     "graceful-fs": "^4.2.8",
     "mustache": "^4.2.0",
     "node-zip": "^1.1.1",
-    "read-pkg": "^5.2.0",
+    "read-pkg": "^7.1.0",
     "semver": "^7.3.5",
     "tiny-types": "^1.16.1",
     "upath": "^2.0.1"
