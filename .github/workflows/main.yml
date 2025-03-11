@@ -52,7 +52,7 @@ jobs:
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2
         with:
-          node-version: 14.x
+          node-version: 14.21.3
       - name: Setup Node Modules
         uses: bahmutov/npm-install@v1
         env:
