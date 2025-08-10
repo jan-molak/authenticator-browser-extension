@@ -72,7 +72,7 @@
     "express": "^4.17.1",
     "express-basic-auth": "^1.2.0",
     "geckodriver": "^2.0.3",
-    "memfs": "^3.2.2",
+    "memfs": "^3.5.3",
     "mocha": "^9.1.0",
     "mocha-testdata": "^1.2.0",
     "nyc": "^15.1.0",
